@@ -28,9 +28,20 @@ defined('ABSPATH') or die('Not Found');
 
 add_action('activate_bulk-redirect/bulk-redirect.php','bulk_redirect_install');
 add_action('wp_footer','log_execution');
+add_action('admin_menu','bulk_admin_actions');
+
+function bulk_menu(){
+	global $wpdb;
+	include 'bulk-admin.php';
+}
+
+function bulk_admin_actions(){
+	add_options_page('Bulk Redirects Administration','Add Bulk Redirects','manage_options','Bulk-Redirect','bulk_menu');
+}
+
 
 function log_execution(){
-	echo 'loggded';
+	echo '<!-- loggded -->';
 }
 
 function bulk_redirect_install(){
