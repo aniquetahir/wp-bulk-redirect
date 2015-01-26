@@ -27,12 +27,28 @@
 defined('ABSPATH') or die('Not Found');
 
 add_action('activate_bulk-redirect/bulk-redirect.php','bulk_redirect_install');
-add_action('wp_footer','log_execution');
+//add_action('wp_footer','log_execution');
 add_action('admin_menu','bulk_admin_actions');
+add_action('send_headers','add_redirect');
+
+function add_redirect(){
+	global $wpdb;
+	$table = $wpdb->prefix.'bulk_redirect';
+	$thisUrl = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+	$thisUrl = trim($thisUrl,'/');
+	$thisUrl = str_replace("'","''",$thisUrl);
+
+	$urlTo = $wpdb->get_var("select urlto from $table where urlfrom='$thisUrl' or urlfrom='$thisUrl/'");
+
+	if($urlTo!=null){
+		header("HTTP/1.1 301 Moved Permanently");
+		header('Location: '.$urlTo);die();
+	}
+
+
+}
 
 function bulk_menu(){
-
-	$redirect = get_redirects();
 	include 'bulk-admin.php';
 }
 
@@ -40,41 +56,18 @@ function bulk_admin_actions(){
 	add_options_page('Bulk Redirects Administration','Add Bulk Redirects','manage_options','Bulk-Redirect','bulk_menu');
 }
 
-
-
-function log_execution(){
-	echo '<!-- loggded -->';
-}
-
 function bulk_redirect_install(){
 	global $wpdb;
 	$table = $wpdb->prefix.'bulk_redirect';
 	$structure = "
 		create table $table (
-			urlfrom varchar(2048),
-			urlto varchar(2048)
-			PRIMARY KEY (urlfrom,urlto) USING BTREE
+			urlfrom varchar(512),
+			urlto varchar(512),
+			PRIMARY KEY (urlfrom) USING BTREE
 		)
 	";
 
 	$wpdb->query($structure);
 }
 
-function add_redirect(){
-	global $wpdb;
-
-}
-
-function remove_redirect(){
-	global $wpdb;
-
-}
-
-function get_redirects(){
-	global $wpdb;
-	$table = $wpdb->prefix.'bulk_redirect';
-	$redirects = $wpdb->get_results("SELECT * FROM $table");
-
-	return $redirects;
-}
 
