@@ -31,13 +31,15 @@ add_action('wp_footer','log_execution');
 add_action('admin_menu','bulk_admin_actions');
 
 function bulk_menu(){
-	global $wpdb;
+
+	$redirect = get_redirects();
 	include 'bulk-admin.php';
 }
 
 function bulk_admin_actions(){
 	add_options_page('Bulk Redirects Administration','Add Bulk Redirects','manage_options','Bulk-Redirect','bulk_menu');
 }
+
 
 
 function log_execution(){
@@ -68,7 +70,7 @@ function remove_redirect(){
 
 }
 
-function get_redirect(){
+function get_redirects(){
 	global $wpdb;
 	$table = $wpdb->prefix.'bulk_redirect';
 	$redirects = $wpdb->get_results("SELECT * FROM $table");
