@@ -30,6 +30,8 @@ add_action('activate_bulk-redirect/bulk-redirect.php','bulk_redirect_install');
 //add_action('wp_footer','log_execution');
 add_action('admin_menu','bulk_admin_actions');
 add_action('send_headers','add_redirect');
+add_filter('plugin_action_links_'.plugin_basename(__FILE__),'wp_action_links');
+
 
 function add_redirect(){
 	global $wpdb;
@@ -53,7 +55,9 @@ function bulk_menu(){
 }
 
 function bulk_admin_actions(){
-	add_options_page('Bulk Redirects Administration','Add Bulk Redirects','manage_options','Bulk-Redirect','bulk_menu');
+	add_options_page('Bulk Redirects Administration','Add Bulk Redirects','manage_options','bulk-redirect','bulk_menu');
+
+	//add_submenu_page('Bulk-Redirects','Add Bulk Redirects','Bulk Redirect Settings','manage_options','bulk-redirect','bulk_menu');
 }
 
 function bulk_redirect_install(){
@@ -68,6 +72,13 @@ function bulk_redirect_install(){
 	";
 
 	$wpdb->query($structure);
+}
+
+
+function wp_action_links($links) {
+	$settings_link = '<a href="options-general.php?page=bulk-redirect">'. esc_html(__('Settings')) . '</a>';
+	array_unshift($links, $settings_link);
+	return $links;
 }
 
 

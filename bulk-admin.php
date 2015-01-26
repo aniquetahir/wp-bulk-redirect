@@ -65,8 +65,8 @@ if(isset($_FILES) && isset($_FILES['bulkfile'])){
 	<p><h3>Example:</h3></p>
 	<p>
 <code>
-<p>http://www.example.com/wp/blah|http://www.example2.com/wp</p>
-<p>http://example.com/wp/blah2?abc=def|http://www.example2.com/wp</p>
+http://www.example.com/wp/blah|http://www.example2.com/wp<br>
+http://example.com/wp/blah2?abc=def|http://www.example2.com/wp
 </code>
 	</p>
 
