@@ -24,6 +24,3 @@ Upload and Activate
 *Release Date - 23rd January, 2015*
 
 * Initial Release
-
-* Fixed a key problem affecting the stats feature in WordPress MU
-* Provide additional blog information in Akismet API calls
