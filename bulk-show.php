@@ -28,8 +28,8 @@ $current_redirections = $wpdb->get_results("
     foreach($current_redirections as $current_redirection){
 ?>
         <tr>
-            <td><?= $current_redirection['urlfrom'] ?></td>
-            <td><?= $current_redirection['urlto'] ?></td>
+            <td><?= htmlspecialchars($current_redirection['urlfrom']) ?></td>
+            <td><?= htmlspecialchars($current_redirection['urlto']) ?></td>
             <td>
                 <a href="?page=<?= $_GET['page'] ?>&action=delete&from=<?= urlencode($current_redirection['urlfrom']) ?>" class="button">Delete</a>
             </td>
